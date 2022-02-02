@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SzofttechZH2_POKLZ6.MainPage"
+             xmlns:behavior="clr-namespace:SzofttechZH2_POKLZ6.ViewModel.Behaviors;assembly=SzofttechZH2-POKLZ6"
+             xmlns:viewmodel="clr-namespace:SzofttechZH2_POKLZ6.ViewModel;assembly=SzofttechZH2-POKLZ6">
+
+    <ContentPage.Resources>
+        <viewmodel:UpdateTime x:Key="vmUpdateTime"/>
+        <viewmodel:CommonViewModel x:Key="vmCommon"/>
+    </ContentPage.Resources>
+
+    <RefreshView RefreshColor="DeepSkyBlue">
+        <RefreshView.Behaviors>
+            <behavior:RefreshBehavior/>
+        </RefreshView.Behaviors>
+        <ScrollView>
+            <StackLayout>
+                <Frame BackgroundColor="Orange" Padding="32" CornerRadius="0">
+                    <Label Text="Exchange Rates" FontAttributes="Bold" HorizontalTextAlignment="Center" TextColor="White" FontSize="36"/>
+                </Frame>
+
+
+                <Label Text="Base Currency" FontSize="36"  HorizontalOptions="Center" FontAttributes="Bold" TextColor="#eb5834"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Picker x:Name="pickerOriginal" HorizontalTextAlignment="Center" Grid.Column="0">
+                        <Picker.Behaviors>
+                            <behavior:CurrencyGetter BindingContext="{StaticResource vmCommon}"
+                                                     Multiplier="{Binding Multiplier, Mode=OneWay, UpdateSourceEventName=PropertyChanged}" 
+                                                     ListView="{Binding ListView, Mode=TwoWay, UpdateSourceEventName=PropertyChanged}"
+                                                     Key="{Binding Key, Mode=TwoWay, UpdateSourceEventName=PropertyChanged}"/>
+                        </Picker.Behaviors>
+                    </Picker>
+                </Grid>
+                <Entry Grid.Column="0" Keyboard="Numeric" BindingContext="{StaticResource vmCommon}" Text="{Binding Multiplier, Mode=TwoWay, UpdateSourceEventName=PropertyChanged}"  
+                       Margin="120,0,120,0" HorizontalTextAlignment="Center" HorizontalOptions="Fill">
+                    <Entry.Behaviors>
+                        <behavior:UpdateMultiplierBehavior BindingContext="{StaticResource vmCommon}" 
+                                                           Multiplier="{Binding Multiplier, Mode=TwoWay, UpdateSourceEventName=PropertyChanged}"
+                                                           ListView="{Binding ListView, Mode=TwoWay, UpdateSourceEventName=PropertyChanged}"
+                                                           Key="{Binding Key, Mode=TwoWay, UpdateSourceEventName=PropertyChanged}"/>
+                    </Entry.Behaviors>
+                </Entry>
+
+
+                <Label Text="{Binding CurrencyQueryDate, StringFormat='Currencies last updated: {0}' }" BindingContext="{StaticResource vmUpdateTime}" FontSize="Small" HorizontalOptions="Center"/>
+
+                <Label Text="Exchange Rates" FontSize="36"  HorizontalOptions="Center" FontAttributes="Bold" TextColor="#eb5834"/>
+
+                <ListView Grid.Column="1" SelectionMode="None" VerticalOptions="Center" HorizontalOptions="Center" 
+                          BindingContext="{StaticResource vmCommon}" ItemsSource="{Binding ListView, Mode=TwoWay, UpdateSourceEventName=PropertyChanged}" VerticalScrollBarVisibility="Never">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextCell TextColor="#eb5834" Text="{Binding Name, Mode=OneWay, UpdateSourceEventName=PropertyChanged}" 
+                                      Detail="{Binding Value, Mode=OneWay, UpdateSourceEventName=PropertyChanged}" DetailColor="Black"/>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

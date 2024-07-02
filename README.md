@@ -1,5 +1,9 @@
 # Xamarin Exchange Rates
 
+<p align="center">
 Cross-Platform exchange rates application for UWP / Android 
+</p>
 
-![screenshot](screenshot.jpg)
+<p align="center">
+  <img src="screenshot.jpg" alt="screenshot">
+</p>
